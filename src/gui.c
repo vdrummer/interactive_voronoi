@@ -18,19 +18,19 @@ struct gui {
 
 // INTERNAL FUNCTIONS
 
-void renderCircle(Gui* g, Point p, int r) {
-  int x0 = p.x - r;
-  int y0 = p.y - r;
-  int x1 = p.x + r;
-  int y1 = p.y + r;
+void renderCentroid(Gui* g, Centroid c, int r) {
+  int x0 = c.point.x - r;
+  int y0 = c.point.y - r;
+  int x1 = c.point.x + r;
+  int y1 = c.point.y + r;
 
-  SDL_SetRenderDrawColor(g->renderer, 0, 0, 0, 255);
+  SDL_SetRenderDrawColor(g->renderer, c.color.r, c.color.g, c.color.b, 255);
 
   for (int y = y0; y < y1; y++) {
     if (y >= 0 && y < g->height) {
       for (int x = x0; x < x1; x++) {
         if (x >= 0 && x < g->width) {
-          if (point_fakeDist((Point) {x, y}, p) < r * r) {
+          if (point_fakeDist((Point) {x, y}, c.point) < r * r) {
             SDL_RenderDrawPoint(g->renderer, x, y);
           }
         }
@@ -97,7 +97,7 @@ void gui_render(Gui* g) {
   Centroid* cp = centroid_list_getNext(g->centroids);
 
   while (cp != NULL) {
-    renderCircle(g, cp->point, RADIUS);
+    renderCentroid(g, *cp, RADIUS);
     cp = centroid_list_getNext(g->centroids);
   }
 
@@ -115,10 +115,18 @@ void gui_update(Gui* g) {
     switch(e.type) {
       case SDL_QUIT:
         g->quit = true;
+        break;
+      case SDL_MOUSEBUTTONDOWN:
+        centroid_list_append(
+            g->centroids,
+            (Centroid) {
+              .point = {e.button.x, e.button.y}, 
+              .color = color_random()
+            }
+        );
+        break;
     }
   }
-
-  //TODO implement other update stuff
 }
 
 bool gui_doQuit(Gui* g) {
