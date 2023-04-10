@@ -117,13 +117,15 @@ void gui_update(Gui* g) {
         g->quit = true;
         break;
       case SDL_MOUSEBUTTONDOWN:
-        centroid_list_append(
-            g->centroids,
-            (Centroid) {
-              .point = {e.button.x, e.button.y}, 
-              .color = color_random()
-            }
-        );
+        if (e.button.button == SDL_BUTTON_LEFT) {
+          centroid_list_append(
+              g->centroids,
+              (Centroid) {
+                .point = {e.button.x, e.button.y},
+                .color = color_random()
+              }
+          );
+        }
         break;
     }
   }
