@@ -44,6 +44,8 @@ void test_append() {
 
   cp = centroid_list_getNext(cl);
   TEST_ASSERT_NULL(cp);
+
+  centroid_list_free(cl);
 }
 
 void test_remove() {
@@ -103,6 +105,8 @@ void test_remove() {
 
   cp = centroid_list_getNext(cl);
   TEST_ASSERT_NULL(cp);
+
+  centroid_list_free(cl);
 }
 
 // NB:
