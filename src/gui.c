@@ -117,14 +117,19 @@ void gui_update(Gui* g) {
         g->quit = true;
         break;
       case SDL_MOUSEBUTTONDOWN:
-        if (e.button.button == SDL_BUTTON_LEFT) {
-          centroid_list_append(
-              g->centroids,
-              (Centroid) {
-                .point = {e.button.x, e.button.y},
-                .color = color_random()
-              }
-          );
+        {
+          const Point clickedPoint = {e.button.x, e.button.y};
+          if (e.button.button == SDL_BUTTON_LEFT) {
+            centroid_list_append(
+                g->centroids,
+                (Centroid) {
+                  .point = clickedPoint,
+                  .color = color_random()
+                }
+            );
+          } else if (e.button.button == SDL_BUTTON_RIGHT) {
+            centroid_list_removeClosest(g->centroids, clickedPoint);
+          }
         }
         break;
     }
