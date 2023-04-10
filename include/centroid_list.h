@@ -18,6 +18,6 @@ Centroid* centroid_list_getNext(CentroidList* cl);
 void centroid_list_resetIterator(CentroidList* cl);
 void centroid_list_setIterator(CentroidList* cl, size_t index);
 size_t centroid_list_getSize(CentroidList* cl);
-void centroid_list_removeClosest(CentroidList* cl, Point p);
+void centroid_list_removeClosest(CentroidList* cl, Point p, const int radius);
 
 #endif // VORONOI_POINT_LIST_H

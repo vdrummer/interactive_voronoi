@@ -128,7 +128,7 @@ void gui_update(Gui* g) {
                 }
             );
           } else if (e.button.button == SDL_BUTTON_RIGHT) {
-            centroid_list_removeClosest(g->centroids, clickedPoint);
+            centroid_list_removeClosest(g->centroids, clickedPoint, RADIUS);
           }
         }
         break;

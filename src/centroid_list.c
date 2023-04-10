@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <stdio.h>
 
 #include "centroid_list.h"
 
@@ -177,7 +178,7 @@ void centroid_list_setIterator(CentroidList* cl, size_t index) {
   cl->current = node;
 }
 
-void centroid_list_removeClosest(CentroidList* cl, Point p) {
+void centroid_list_removeClosest(CentroidList* cl, Point p, const int radius) {
   if (cl == NULL) {
     return;
   }
@@ -204,6 +205,8 @@ void centroid_list_removeClosest(CentroidList* cl, Point p) {
     current = current->next;
     index++;
   }
-  
-  centroid_list_remove(cl, closestIndex);
+
+  if (closestDistance <= radius * radius) {
+    centroid_list_remove(cl, closestIndex);
+  }
 }

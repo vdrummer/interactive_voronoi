@@ -161,7 +161,7 @@ void test_removeClosest() {
   centroid_list_append(cl, c2);
   centroid_list_append(cl, c3);
 
-  centroid_list_removeClosest(cl, (Point) {0, 0});
+  centroid_list_removeClosest(cl, (Point) {0, 0}, 1000);
   TEST_ASSERT_EQUAL_INT(2, centroid_list_getSize(cl));
 
   Centroid* cp = centroid_list_getNext(cl);
