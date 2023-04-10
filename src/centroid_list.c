@@ -68,6 +68,7 @@ void centroid_list_append(CentroidList* pl, Centroid p) {
     pl->current = node;
   } else {
     pl->tail->next = node;
+    pl->tail = node;
   }
 
   pl->size++;
