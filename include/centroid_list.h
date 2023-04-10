@@ -14,5 +14,6 @@ void centroid_list_append(CentroidList* pl, Centroid p);
 void centroid_list_remove(CentroidList* pl, size_t index);
 Centroid* centroid_list_getNext(CentroidList* pl);
 void centroid_list_resetIterator(CentroidList* pl);
+size_t centroid_list_getSize(CentroidList* cl);
 
 #endif // VORONOI_POINT_LIST_H

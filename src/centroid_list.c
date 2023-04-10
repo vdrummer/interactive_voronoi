@@ -146,3 +146,11 @@ void centroid_list_resetIterator(CentroidList* pl) {
 
   pl->current = pl->head;
 }
+
+size_t centroid_list_getSize(CentroidList* cl) {
+  if (cl == NULL) {
+    return 0;
+  }
+
+  return cl->size;
+}
