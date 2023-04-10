@@ -8,3 +8,9 @@ Point point_random(const int min_x, const int max_x, const int min_y, const int 
 
   return (Point) {x, y};
 }
+
+int point_fakeDist(Point p1, Point p2) {
+  int dx = p1.x - p2.x;
+  int dy = p1.y - p2.y;
+  return dx * dx + dy * dy;
+}

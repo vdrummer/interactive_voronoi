@@ -8,5 +8,6 @@ struct point {
 } ;
 
 Point point_random(const int min_x, const int max_x, const int min_y, const int max_y);
+int point_fakeDist(Point p1, Point p2);
 
 #endif // VORONOI_POINT_H
