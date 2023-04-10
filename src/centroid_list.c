@@ -107,7 +107,6 @@ void centroid_list_remove(CentroidList* pl, size_t index) {
     }
 
     // current is now at target.previous
-    //TODO remove node
     if (current->next == NULL) {
       return;
     }
@@ -125,6 +124,8 @@ void centroid_list_remove(CentroidList* pl, size_t index) {
 
     free(tmp);
   }
+
+  pl->size--;
 }
 
 Centroid* centroid_list_getNext(CentroidList* pl) {
