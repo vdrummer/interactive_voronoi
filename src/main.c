@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <time.h>
 
 #include "gui.h"
 #include "centroid_list.h"
@@ -9,6 +10,7 @@
 #define HEIGHT 600
 
 int main() {
+  srand(time(NULL));
   CentroidList* centroids = centroid_list_init();
   assert(centroids != NULL);
 
