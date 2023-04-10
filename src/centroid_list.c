@@ -4,7 +4,7 @@
 
 typedef struct centroid_list_node CentroidListNode;
 struct centroid_list_node {
-  Centroid point;
+  Centroid centroid;
   CentroidListNode* next;
 };
 
@@ -16,25 +16,25 @@ struct centroid_list {
 };
 
 CentroidList* centroid_list_init() {
-  CentroidList* pl = malloc(sizeof(CentroidList));
-  if (pl == NULL) {
+  CentroidList* cl = malloc(sizeof(CentroidList));
+  if (cl == NULL) {
     return NULL;
   }
 
-  pl->size = 0;
-  pl->current = NULL;
-  pl->head = NULL;
-  pl->tail = NULL;
+  cl->size = 0;
+  cl->current = NULL;
+  cl->head = NULL;
+  cl->tail = NULL;
 
-  return pl;
+  return cl;
 }
 
-void centroid_list_free(CentroidList* pl) {
-  if (pl == NULL) {
+void centroid_list_free(CentroidList* cl) {
+  if (cl == NULL) {
     return;
   }
 
-  CentroidListNode* current = pl->head;
+  CentroidListNode* current = cl->head;
 
   while (current != NULL) {
     CentroidListNode* next = NULL;
@@ -46,11 +46,11 @@ void centroid_list_free(CentroidList* pl) {
     current = next;
   }
 
-  free(pl);
+  free(cl);
 }
 
-void centroid_list_append(CentroidList* pl, Centroid p) {
-  if (pl == NULL) {
+void centroid_list_append(CentroidList* cl, Centroid c) {
+  if (cl == NULL) {
     return;
   }
 
@@ -59,46 +59,46 @@ void centroid_list_append(CentroidList* pl, Centroid p) {
     return;
   }
 
-  node->point = p;
+  node->centroid = c;
   node->next = NULL;
 
-  if (pl->tail == NULL) {
-    pl->head = node;
-    pl->tail = node;
-    pl->current = node;
+  if (cl->tail == NULL) {
+    cl->head = node;
+    cl->tail = node;
+    cl->current = node;
   } else {
-    pl->tail->next = node;
-    pl->tail = node;
+    cl->tail->next = node;
+    cl->tail = node;
   }
 
-  pl->size++;
+  cl->size++;
 }
 
-void centroid_list_remove(CentroidList* pl, size_t index) {
-  if (pl == NULL) {
+void centroid_list_remove(CentroidList* cl, size_t index) {
+  if (cl == NULL) {
     return;
   }
 
-  if (index >= pl->size) {
+  if (index >= cl->size) {
     return;
   }
 
   if (index == 0) {
-    CentroidListNode* tmp = pl->head;
-    pl->head = pl->head->next;
+    CentroidListNode* tmp = cl->head;
+    cl->head = cl->head->next;
 
-    if (pl->head == NULL) {
-      pl->tail = NULL;
-      pl->current = NULL;
+    if (cl->head == NULL) {
+      cl->tail = NULL;
+      cl->current = NULL;
     }
 
-    if (pl->current == tmp) {
-      pl->current = pl->head;
+    if (cl->current == tmp) {
+      cl->current = cl->head;
     }
 
     free(tmp);
   } else {
-    CentroidListNode* current = pl->head;
+    CentroidListNode* current = cl->head;
     size_t count = 0;
 
     while (current != NULL && count < index - 1) {
@@ -114,39 +114,39 @@ void centroid_list_remove(CentroidList* pl, size_t index) {
     CentroidListNode* tmp = current->next;
     current->next = current->next->next;
 
-    if (pl->tail == tmp) {
-      pl->tail = current;
+    if (cl->tail == tmp) {
+      cl->tail = current;
     }
 
-    if (pl->current == tmp) {
-      pl->current = current->next;
+    if (cl->current == tmp) {
+      cl->current = current->next;
     }
 
     free(tmp);
   }
 
-  pl->size--;
+  cl->size--;
 }
 
-Centroid* centroid_list_getNext(CentroidList* pl) {
-  if (pl == NULL) {
+Centroid* centroid_list_getNext(CentroidList* cl) {
+  if (cl == NULL) {
     return NULL;
   }
 
-  Centroid* p = &pl->current->point;
-  if (pl->current != NULL) {
-    pl->current = pl->current->next;
+  Centroid* c = &cl->current->centroid;
+  if (cl->current != NULL) {
+    cl->current = cl->current->next;
   }
 
-  return p;
+  return c;
 }
 
-void centroid_list_resetIterator(CentroidList* pl) {
-  if (pl == NULL) {
+void centroid_list_resetIterator(CentroidList* cl) {
+  if (cl == NULL) {
     return;
   }
 
-  pl->current = pl->head;
+  cl->current = cl->head;
 }
 
 size_t centroid_list_getSize(CentroidList* cl) {
