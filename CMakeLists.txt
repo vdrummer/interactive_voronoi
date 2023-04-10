@@ -10,5 +10,5 @@ target_sources(interactive_voronoi PRIVATE src/point.c src/gui.c src/centroid_li
 
 add_executable(test_centroid_list src/test_centroid_list.c)
 target_include_directories(test_centroid_list PRIVATE include)
-target_sources(test_centroid_list PRIVATE src/centroid_list.c)
+target_sources(test_centroid_list PRIVATE src/centroid_list.c src/point.c)
 target_link_libraries(test_centroid_list PRIVATE unity)

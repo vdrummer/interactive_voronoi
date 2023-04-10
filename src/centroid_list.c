@@ -176,3 +176,34 @@ void centroid_list_setIterator(CentroidList* cl, size_t index) {
 
   cl->current = node;
 }
+
+void centroid_list_removeClosest(CentroidList* cl, Point p) {
+  if (cl == NULL) {
+    return;
+  }
+
+  CentroidListNode* current = cl->head;
+  if (current == NULL) {
+    return;
+  }
+
+  size_t closestIndex = 0;
+  int closestDistance = point_fakeDist(current->centroid.point, p);
+
+  size_t index = 1;
+  current = current->next;
+
+  while (current != NULL) {
+    int dist = point_fakeDist(current->centroid.point, p);
+
+    if (dist < closestDistance) {
+      closestDistance = dist;
+      closestIndex = index;
+    }
+
+    current = current->next;
+    index++;
+  }
+  
+  centroid_list_remove(cl, closestIndex);
+}

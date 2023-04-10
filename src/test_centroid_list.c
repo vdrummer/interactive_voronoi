@@ -138,6 +138,44 @@ void test_setIterator() {
   TEST_ASSERT_EQUAL_INT(3, cp->point.x);
 }
 
+void test_removeClosest() {
+  CentroidList* cl = centroid_list_init();
+  TEST_ASSERT_NOT_NULL(cl);
+
+  Centroid c1 = {
+    .color = {255, 255, 255},
+    .point = {100, 100}
+  };
+
+  Centroid c2 = {
+    .color = {255, 255, 255},
+    .point = {1, 1}
+  };
+
+  Centroid c3 = {
+    .color = {255, 255, 255},
+    .point = {500, 500}
+  };
+
+  centroid_list_append(cl, c1);
+  centroid_list_append(cl, c2);
+  centroid_list_append(cl, c3);
+
+  centroid_list_removeClosest(cl, (Point) {0, 0});
+  TEST_ASSERT_EQUAL_INT(2, centroid_list_getSize(cl));
+
+  Centroid* cp = centroid_list_getNext(cl);
+  TEST_ASSERT_NOT_NULL(cp);
+  TEST_ASSERT_EQUAL_INT(100, cp->point.x);
+
+  cp = centroid_list_getNext(cl);
+  TEST_ASSERT_NOT_NULL(cp);
+  TEST_ASSERT_EQUAL_INT(500, cp->point.x);
+
+  cp = centroid_list_getNext(cl);
+  TEST_ASSERT_NULL(cp);
+}
+
 // NB:
 // - Centroid* centroid_list_getNext(CentroidList* pl)
 // - void centroid_list_resetIterator(CentroidList* pl)
@@ -151,6 +189,7 @@ int main() {
   RUN_TEST(test_append);
   RUN_TEST(test_remove);
   RUN_TEST(test_setIterator);
+  RUN_TEST(test_removeClosest);
 
   return UNITY_END();
 }
