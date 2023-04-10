@@ -2,6 +2,8 @@
 #include <SDL2/SDL.h>
 #include <stdio.h>
 
+#include "point.h"
+
 #define WIDTH 800
 #define HEIGHT 600
 
