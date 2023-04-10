@@ -156,3 +156,23 @@ size_t centroid_list_getSize(CentroidList* cl) {
 
   return cl->size;
 }
+
+void centroid_list_setIterator(CentroidList* cl, size_t index) {
+  if (cl == NULL) {
+    return;
+  }
+
+  if (index >= cl->size) {
+    return;
+  }
+
+  CentroidListNode* node = cl->head;
+  size_t counter = 0;
+
+  while (counter < index && node != NULL) {
+    counter++;
+    node = node->next;
+  }
+
+  cl->current = node;
+}
