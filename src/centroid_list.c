@@ -10,7 +10,7 @@ struct centroid_list_node {
 };
 
 struct centroid_list {
-  size_t size;
+  int size;
   CentroidListNode* current;
   CentroidListNode* head;
   CentroidListNode* tail;
@@ -75,7 +75,7 @@ void centroid_list_append(CentroidList* cl, Centroid c) {
   cl->size++;
 }
 
-void centroid_list_remove(CentroidList* cl, size_t index) {
+void centroid_list_remove(CentroidList* cl, int index) {
   if (cl == NULL) {
     return;
   }
@@ -100,7 +100,7 @@ void centroid_list_remove(CentroidList* cl, size_t index) {
     free(tmp);
   } else {
     CentroidListNode* current = cl->head;
-    size_t count = 0;
+    int count = 0;
 
     while (current != NULL && count < index - 1) {
       current = current->next;
@@ -150,7 +150,7 @@ void centroid_list_resetIterator(CentroidList* cl) {
   cl->current = cl->head;
 }
 
-size_t centroid_list_getSize(CentroidList* cl) {
+int centroid_list_getSize(CentroidList* cl) {
   if (cl == NULL) {
     return 0;
   }
@@ -158,7 +158,7 @@ size_t centroid_list_getSize(CentroidList* cl) {
   return cl->size;
 }
 
-void centroid_list_setIterator(CentroidList* cl, size_t index) {
+void centroid_list_setIterator(CentroidList* cl, int index) {
   if (cl == NULL) {
     return;
   }
@@ -168,7 +168,7 @@ void centroid_list_setIterator(CentroidList* cl, size_t index) {
   }
 
   CentroidListNode* node = cl->head;
-  size_t counter = 0;
+  int counter = 0;
 
   while (counter < index && node != NULL) {
     counter++;
@@ -178,20 +178,20 @@ void centroid_list_setIterator(CentroidList* cl, size_t index) {
   cl->current = node;
 }
 
-void centroid_list_removeClosest(CentroidList* cl, Point p, const int radius) {
+int getClosestIndex(CentroidList* cl, Point p) {
   if (cl == NULL) {
-    return;
+    return -1;
+  }
+
+  if (cl->size == 0) {
+    return -1;
   }
 
   CentroidListNode* current = cl->head;
-  if (current == NULL) {
-    return;
-  }
-
-  size_t closestIndex = 0;
+  int closestIndex = 0;
   int closestDistance = point_fakeDist(current->centroid.point, p);
 
-  size_t index = 1;
+  int index = 1;
   current = current->next;
 
   while (current != NULL) {
@@ -205,6 +205,44 @@ void centroid_list_removeClosest(CentroidList* cl, Point p, const int radius) {
     current = current->next;
     index++;
   }
+
+  return closestIndex;
+}
+
+Centroid* centroidListGetNth(CentroidList* cl, int index) {
+  if (cl == NULL) {
+    return NULL;
+  }
+
+  if (index < 0 || index >= cl->size) {
+    // index out of range
+    return NULL;
+  }
+
+  CentroidListNode* current = cl->head;
+  int counter = 0;
+
+  while (counter < index && current != NULL) {
+    counter++;
+    current = current->next;
+  }
+
+  return &current->centroid;
+}
+
+void centroid_list_removeClosest(CentroidList* cl, Point p, const int radius) {
+  if (cl == NULL) {
+    return;
+  }
+
+  CentroidListNode* current = cl->head;
+  if (current == NULL) {
+    return;
+  }
+
+  int closestIndex = getClosestIndex(cl, p);
+  Centroid* closestCentroid = centroidListGetNth(cl, closestIndex);
+  int closestDistance = point_fakeDist(p, closestCentroid->point);
 
   if (closestDistance <= radius * radius) {
     centroid_list_remove(cl, closestIndex);

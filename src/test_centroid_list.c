@@ -176,6 +176,33 @@ void test_removeClosest() {
   TEST_ASSERT_NULL(cp);
 }
 
+void test_getNth() {
+  CentroidList* cl = centroid_list_init();
+  TEST_ASSERT_NOT_NULL(cl);
+
+  Centroid c1 = {
+    .color = {255, 255, 255},
+    .point = {100, 100}
+  };
+
+  Centroid c2 = {
+    .color = {255, 255, 255},
+    .point = {1, 1}
+  };
+
+  Centroid c3 = {
+    .color = {255, 255, 255},
+    .point = {500, 500}
+  };
+
+  centroid_list_append(cl, c1);
+  centroid_list_append(cl, c2);
+  centroid_list_append(cl, c3);
+
+  Centroid* c = centroidListGetNth(cl, 1);
+  TEST_ASSERT_EQUAL_INT(1, c->point.x);
+}
+
 // NB:
 // - Centroid* centroid_list_getNext(CentroidList* pl)
 // - void centroid_list_resetIterator(CentroidList* pl)
@@ -190,6 +217,7 @@ int main() {
   RUN_TEST(test_remove);
   RUN_TEST(test_setIterator);
   RUN_TEST(test_removeClosest);
+  RUN_TEST(test_getNth);
 
   return UNITY_END();
 }

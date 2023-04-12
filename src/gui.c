@@ -132,6 +132,10 @@ void gui_update(Gui* g) {
           }
         }
         break;
+      case SDL_MOUSEMOTION:
+        //TODO move nearest centroid when LMB is pressed
+        //-> SDL_BUTTON_LMASK
+        break;
     }
   }
 }
