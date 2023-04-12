@@ -209,7 +209,7 @@ int getClosestIndex(CentroidList* cl, Point p) {
   return closestIndex;
 }
 
-Centroid* centroidListGetNth(CentroidList* cl, int index) {
+Centroid* centroid_list_getNth(CentroidList* cl, int index) {
   if (cl == NULL) {
     return NULL;
   }
@@ -241,10 +241,24 @@ void centroid_list_removeClosest(CentroidList* cl, Point p, const int radius) {
   }
 
   int closestIndex = getClosestIndex(cl, p);
-  Centroid* closestCentroid = centroidListGetNth(cl, closestIndex);
+  Centroid* closestCentroid = centroid_list_getNth(cl, closestIndex);
   int closestDistance = point_fakeDist(p, closestCentroid->point);
 
   if (closestDistance <= radius * radius) {
     centroid_list_remove(cl, closestIndex);
   }
+}
+
+Centroid* centroid_list_getClosestCentroid(CentroidList* cl, Point p) {
+  if (cl == NULL) {
+    return NULL;
+  }
+
+  int closestIndex = getClosestIndex(cl, p);
+  if (closestIndex < 0 || closestIndex >= cl->size) {
+    // out of bounds or not found
+    return NULL;
+  }
+
+  return centroid_list_getNth(cl, closestIndex);
 }

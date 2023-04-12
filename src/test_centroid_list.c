@@ -199,7 +199,7 @@ void test_getNth() {
   centroid_list_append(cl, c2);
   centroid_list_append(cl, c3);
 
-  Centroid* c = centroidListGetNth(cl, 1);
+  Centroid* c = centroid_list_getNth(cl, 1);
   TEST_ASSERT_EQUAL_INT(1, c->point.x);
 }
 

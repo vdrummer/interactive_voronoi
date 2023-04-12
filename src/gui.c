@@ -4,6 +4,8 @@
 
 #include "gui.h"
 #include "point.h"
+#include "centroid.h"
+#include "centroid_list.h"
 
 #define RADIUS 10
 
@@ -14,6 +16,7 @@ struct gui {
   SDL_Window* window;
   SDL_Renderer* renderer;
   bool quit;
+  Centroid* currentCentroid;
 };
 
 // INTERNAL FUNCTIONS
@@ -51,6 +54,7 @@ Gui* gui_init(const int width, const int height, CentroidList* cl) {
   gui->height = height;
   gui->centroids = cl;
   gui->quit = false;
+  gui->currentCentroid = NULL;
 
   if (SDL_Init(SDL_INIT_VIDEO) != 0) {
     fprintf(stderr, "Error intiializing SDL: %s\n", SDL_GetError());
@@ -116,8 +120,8 @@ void gui_update(Gui* g) {
       case SDL_QUIT:
         g->quit = true;
         break;
-      case SDL_MOUSEBUTTONDOWN:
-        {
+      case SDL_MOUSEBUTTONUP:
+        if (g->currentCentroid == NULL) {
           const Point clickedPoint = {e.button.x, e.button.y};
           if (e.button.button == SDL_BUTTON_LEFT) {
             centroid_list_append(
@@ -130,11 +134,22 @@ void gui_update(Gui* g) {
           } else if (e.button.button == SDL_BUTTON_RIGHT) {
             centroid_list_removeClosest(g->centroids, clickedPoint, RADIUS);
           }
+        } else {
+          g->currentCentroid = NULL;
         }
         break;
       case SDL_MOUSEMOTION:
-        //TODO move nearest centroid when LMB is pressed
-        //-> SDL_BUTTON_LMASK
+        if (e.motion.state & SDL_BUTTON_LMASK) {
+          Point clickedPoint = {e.motion.x, e.motion.y};
+          Centroid* closestCentroid = centroid_list_getClosestCentroid(g->centroids, clickedPoint);
+          if (closestCentroid != NULL) {
+            if (g->currentCentroid == NULL) {
+              g->currentCentroid = closestCentroid;
+            } else {
+              g->currentCentroid->point = clickedPoint;
+            }
+          }
+        }
         break;
     }
   }
