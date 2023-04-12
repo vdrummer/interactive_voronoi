@@ -144,7 +144,9 @@ void gui_update(Gui* g) {
           Centroid* closestCentroid = centroid_list_getClosestCentroid(g->centroids, clickedPoint);
           if (closestCentroid != NULL) {
             if (g->currentCentroid == NULL) {
-              g->currentCentroid = closestCentroid;
+              if (point_fakeDist(clickedPoint, closestCentroid->point) < RADIUS * RADIUS) {
+                g->currentCentroid = closestCentroid;
+              }
             } else {
               g->currentCentroid->point = clickedPoint;
             }
