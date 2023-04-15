@@ -27,7 +27,7 @@ void renderCentroid(Gui* g, Centroid c, int r) {
   int x1 = c.point.x + r;
   int y1 = c.point.y + r;
 
-  SDL_SetRenderDrawColor(g->renderer, c.color.r, c.color.g, c.color.b, 255);
+  SDL_SetRenderDrawColor(g->renderer, 255, 255, 255, 255);
 
   for (int y = y0; y < y1; y++) {
     if (y >= 0 && y < g->height) {
@@ -97,6 +97,20 @@ void gui_render(Gui* g) {
   SDL_SetRenderDrawColor(g->renderer, 255, 255, 255, 255);
   SDL_RenderClear(g->renderer);
 
+  // voronoi rendering
+  for (int x = 0; x < g->width; x++) {
+    for (int y = 0; y < g->height; y++) {
+      Centroid* c = centroid_list_getClosestCentroid(g->centroids, (Point) {x, y});
+      if (c == NULL) {
+        continue;
+      }
+
+      SDL_SetRenderDrawColor(g->renderer, c->color.r, c->color.g, c->color.b, 255);
+      SDL_RenderDrawPoint(g->renderer, x, y);
+    }
+  }
+
+  // centroid rendering
   centroid_list_resetIterator(g->centroids);
   Centroid* cp = centroid_list_getNext(g->centroids);
 
