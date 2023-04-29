@@ -80,7 +80,7 @@ void centroid_list_remove(CentroidList* cl, int index) {
     return;
   }
 
-  if (index >= cl->size) {
+  if (index < 0 || index >= cl->size) {
     return;
   }
 
@@ -163,7 +163,7 @@ void centroid_list_setIterator(CentroidList* cl, int index) {
     return;
   }
 
-  if (index >= cl->size) {
+  if (index < 0 || index >= cl->size) {
     return;
   }
 

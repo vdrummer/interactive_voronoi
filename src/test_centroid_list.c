@@ -71,6 +71,14 @@ void test_remove() {
   centroid_list_append(cl, c2);
   centroid_list_append(cl, c3);
 
+  // index too large
+  centroid_list_remove(cl, 100);
+
+  // index < 1
+  centroid_list_remove(cl, -2);
+
+  // valid index
+
   // remove the middle
   centroid_list_remove(cl, 1);
   TEST_ASSERT_EQUAL_INT(2, centroid_list_getSize(cl));
@@ -199,7 +207,17 @@ void test_getNth() {
   centroid_list_append(cl, c2);
   centroid_list_append(cl, c3);
 
-  Centroid* c = centroid_list_getNth(cl, 1);
+  // index too large
+  Centroid* c = centroid_list_getNth(cl, 100);
+  TEST_ASSERT_NULL(c);
+
+  // index < 1
+  c = centroid_list_getNth(cl, -2);
+  TEST_ASSERT_NULL(c);
+
+  // index valid
+  c = centroid_list_getNth(cl, 1);
+  TEST_ASSERT_NOT_NULL(c);
   TEST_ASSERT_EQUAL_INT(1, c->point.x);
 }
 
